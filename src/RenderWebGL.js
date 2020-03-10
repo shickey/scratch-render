@@ -615,6 +615,8 @@ class RenderWebGL extends EventEmitter {
         gl.clearColor.apply(gl, this._backgroundColor);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
+        this.emit('RENDERER_WILL_DRAW', this);
+
         this._drawThese(this._drawList, ShaderManager.DRAW_MODE.default, this._projection);
         if (this._snapshotCallbacks.length > 0) {
             const snapshot = gl.canvas.toDataURL();
