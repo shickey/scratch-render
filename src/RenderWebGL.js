@@ -81,6 +81,8 @@ const colorMatches = (a, b, offset) => (
  */
 const FENCE_WIDTH = 15;
 
+const pixelDataArray = new Uint8Array(1920 * 1080 * 4);
+
 
 class RenderWebGL extends EventEmitter {
     /**
@@ -619,8 +621,9 @@ class RenderWebGL extends EventEmitter {
 
         this._drawThese(this._drawList, ShaderManager.DRAW_MODE.default, this._projection);
         if (this._snapshotCallbacks.length > 0) {
-            const snapshot = gl.canvas.toDataURL();
-            this._snapshotCallbacks.forEach(cb => cb(snapshot));
+            // const snapshot = gl.canvas.toDataURL();
+            gl.readPixels(0, 0, 1920, 1080, gl.RGBA, gl.UNSIGNED_BYTE, pixelDataArray);
+            this._snapshotCallbacks.forEach(cb => cb(pixelDataArray));
             this._snapshotCallbacks = [];
         }
     }
